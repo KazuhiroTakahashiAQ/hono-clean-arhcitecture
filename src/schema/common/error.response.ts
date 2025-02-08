@@ -18,6 +18,21 @@ const errorSchemaFactory = (code: z.ZodEnum<any>) => {
     });
 }
 
+export const notFoundShcema = errorSchemaFactory(z.enum(["NOTFOUND"])).openapi("ErrNOTFOUND")
+export type notFoundType = z.infer<typeof notFoundShcema>
+
+export const notFound = {
+    404: {
+        description:
+            "The client is authenticated but does not have sufficient permissions to access the requested resource.",
+        content: {
+            "application/json": {
+                schema: errorSchemaFactory(z.enum(["NOTFOUND"])).openapi("ErrNOTFOUND"),
+            },
+        },
+    },
+}
+
 export const errorResponses = {
     400: {
         description:
@@ -42,6 +57,15 @@ export const errorResponses = {
         content: {
             "application/json": {
                 schema: errorSchemaFactory(z.enum(["FORBIDDEN"])).openapi("ErrForbidden"),
+            },
+        },
+    },
+    404: {
+        description:
+            "The client is authenticated but does not have sufficient permissions to access the requested resource.",
+        content: {
+            "application/json": {
+                schema: errorSchemaFactory(z.enum(["NOTFOUND"])).openapi("ErrNOTFOUND"),
             },
         },
     },
