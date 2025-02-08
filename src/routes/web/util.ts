@@ -1,7 +1,7 @@
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import type { ZodError } from "zod";
-import type { AppBindings } from "./webRouter";
+import type { AppBindings } from "./index";
 
 // Zod Exception(パラメータバリデーション)
 export const handleZodError = (
@@ -40,10 +40,9 @@ export const handleError = (err: Error, c: Context<AppBindings>): Response => {
               error: {
                 code: err.status,
                 message: err.message,
-                hoge: "hoge"
               },
-              status: err.status
-            }
+            },
+            err.status
         );
     }
 
@@ -54,7 +53,6 @@ export const handleError = (err: Error, c: Context<AppBindings>): Response => {
             error: {
                 code: "INTERNAL_SERVER_ERROR",
                 message: err.message ?? "something unexpected happened",
-                fuga: "fuga",
             },
         },
         { status: 500 },
