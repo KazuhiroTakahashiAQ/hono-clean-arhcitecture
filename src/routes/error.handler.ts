@@ -7,10 +7,10 @@ import { UseCaseException } from "../usecase/error";
 import { DomainException } from "../domain/error";
 
 // Zod Exception(パラメータバリデーション)
-export const handleZodError = (
+export function handleZodError(
   result: { success: true } | { success: false; error: ZodError },
   c: Context,
-) => {
+) {
   if (result.success) return;
   return c.json(
     {
@@ -29,29 +29,28 @@ const internalServerErrorJson = {
     code: "INTERNAL_SERVER_ERROR",
     message: "something unexpected happened",
   },
-  status: 500,
 }
 
 export const handleError = (err: Error, c: Context<AppBindings>): Response => {
   if (err instanceof InfraException) {
     // Loggerを仕込んでいればここでロギング
     console.error(`InfraException: message: ${err.message}, cause: ${err.cause}, stack: ${err.stack}`)
-    return c.json(internalServerErrorJson)
-  } else if (err instanceof UseCaseException) {
-    // Loggerを仕込んでいればここでロギング
-    console.error(`UseCaseException: message: ${err.message}, cause: ${err.cause}, stack: ${err.stack}`)
-    return c.json(internalServerErrorJson)
+    return c.json(internalServerErrorJson, 500)
   } else if (err instanceof DomainException) {
     // Loggerを仕込んでいればここでロギング
     console.error(`DomainException: message: ${err.message}, cause: ${err.cause}, stack: ${err.stack}`)
-    return c.json(internalServerErrorJson)
+    return c.json(internalServerErrorJson, 500)
+  } else if (err instanceof UseCaseException) {
+    // Loggerを仕込んでいればここでロギング
+    console.error(`UseCaseException: message: ${err.message}, cause: ${err.cause}, stack: ${err.stack}`)
+    return c.json(internalServerErrorJson, 500)
   } else if (err instanceof HTTPException) {
     // Loggerを仕込んでいればここでロギング
     console.error(`HTTPException: message: ${err.message}, status: ${err.status}, stack: ${err.stack}`)
-    return c.json(internalServerErrorJson);
+    return c.json(internalServerErrorJson, 500);
   }
 
   // Loggerを仕込んでいればここでロギング
   console.error(`unhandled exception: name: ${err.name}, message: ${err.message}, cause: ${err.cause}, stack: ${err.stack}`)
-  return c.json(internalServerErrorJson);
+  return c.json(internalServerErrorJson, 500);
 }

@@ -1,15 +1,7 @@
-import { OpenAPIHono } from "@hono/zod-openapi";
 import * as routes from "./article.route"
 import * as handlers from "./article.handler"
-import { handleError, handleZodError } from "../../error.handler";
-import type { AppBindings } from "..";
-
-function createRouter(){
-  return new OpenAPIHono<AppBindings>({
-    strict: true,
-    defaultHook: handleZodError
-  })
-}
+import { createRouter } from ".."
+import { handleError } from "../../error.handler"
 
 export const articleRoute = createRouter()
   .openapi(routes.listArticleRoute, handlers.listArticleHandler)
