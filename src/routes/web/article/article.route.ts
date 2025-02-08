@@ -2,8 +2,9 @@ import { createRoute } from "@hono/zod-openapi";
 import { z } from 'zod'
 import { articleResponseSchema } from "../../../schema/web/aritcle/article.response";
 import { articleCreateBodySchema, articleIdParamSchema, articleUpdateBodySchema } from "../../../schema/web/aritcle/article.request";
-import { errorResponses } from "../../../schema/error";
-import { createdResponse, noContentResponse, okResponse } from "../../../schema/success";
+import { errorResponses } from "../../../schema/common/error.response";
+import { createdResponse, noContentResponse, okResponse } from "../../../schema/common/success.response";
+import { bodyRequest } from "../../common/common.request";
 
 export const listArticleRoute = createRoute({
   tags: ['article'],
@@ -33,11 +34,8 @@ export const createArticleRoute = createRoute({
   method: 'post',
   path: '/',
   request: {
-    body: {
-      content: {
-        "application/json": { schema: articleCreateBodySchema }
-    }
-  }},
+    body: bodyRequest(articleCreateBodySchema)
+  },
   responses: {
     201: createdResponse('記事を作成する', articleResponseSchema),
     ...errorResponses
@@ -50,10 +48,7 @@ export const updateArticleRoute = createRoute({
   path: '/{id}',
   request: {
     params: articleIdParamSchema,
-    body: {
-      content: {
-        "application/json": { schema: articleUpdateBodySchema }
-    }}
+    body: bodyRequest(articleUpdateBodySchema)
   },
   responses: {
     200: okResponse('記事を更新する', articleResponseSchema),

@@ -1,7 +1,7 @@
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 import type { ZodError } from "zod";
-import type { AppBindings } from "./index";
+import type { AppBindings } from "../web/index";
 
 // Zod Exception(パラメータバリデーション)
 export const handleZodError = (

@@ -1,6 +1,6 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { articleRoute } from "./article/index";
-import { handleZodError } from "./util";
+import { handleZodError } from "../common/error.handler";
 
 export type AppBindings = {
   Variables: {
