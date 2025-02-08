@@ -1,6 +1,7 @@
 import type { RouteConfig, RouteHandler } from "@hono/zod-openapi";
 import type { createArticleRoute, deleteArticleRoute, getArticleRoute, listArticleRoute, updateArticleRoute } from "./article.route";
-import type { AppBindings } from "..";
+import { HTTPException } from "hono/http-exception";
+import type { AppBindings } from "../webRouter";
 
 export type AppRouteHandler<R extends RouteConfig> = RouteHandler<R, AppBindings>;
 
@@ -50,8 +51,7 @@ export const listArticleHandler: AppRouteHandler<typeof listArticleRoute> = asyn
 export const createArticleHandler: AppRouteHandler<typeof createArticleRoute> = async (c) => {
   const { title, content } = c.req.valid('json')
 
-  // 例外テスト
-  // throw new HTTPException(401, {message: 'テスト例外'})
+  throw new HTTPException(401, {message: 'テスト例外'})
 
   // UseCase層へ処理移譲
   // const article = await createArticle();
@@ -84,7 +84,7 @@ export const updateArticleHandler: AppRouteHandler<typeof updateArticleRoute> = 
     content,
     page
   }
-  return c.json(article, 200);
+  return c.json(article, 201);
 }
 
 export const deleteArticleHandler: AppRouteHandler<typeof deleteArticleRoute> = async (c) => {
@@ -92,5 +92,5 @@ export const deleteArticleHandler: AppRouteHandler<typeof deleteArticleRoute> = 
   // UseCase層へ処理移譲
   // await deleteArticle(id);
 
-  return new Response(null, { status: 204 });
+  return c.json({ id }, 200);
 }

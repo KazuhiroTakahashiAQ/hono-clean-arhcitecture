@@ -21,7 +21,7 @@ const errorSchemaFactory = (code: z.ZodEnum<any>) => {
 export const errorResponses = {
     400: {
         description:
-            "The server cannot process the request due to a client-side error, such as malformed syntax or invalid request parameters.",
+            "The server cannot or will not process the request due to something that is perceived to be a client error.",
         content: {
             "application/json": {
                 schema: errorSchemaFactory(z.enum(["BAD_REQUEST"])).openapi("ErrBadRequest"),
@@ -29,7 +29,7 @@ export const errorResponses = {
         },
     },
     401: {
-        description: "Authentication is required and has either not been provided or is invalid.",
+        description: `Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated". ...`,
         content: {
             "application/json": {
                 schema: errorSchemaFactory(z.enum(["UNAUTHORIZED"])).openapi("ErrUnauthorized"),
@@ -38,7 +38,7 @@ export const errorResponses = {
     },
     403: {
         description:
-            "The client is authenticated but does not have sufficient permissions to access the requested resource.",
+            "The client does not have access rights to the content; ...",
         content: {
             "application/json": {
                 schema: errorSchemaFactory(z.enum(["FORBIDDEN"])).openapi("ErrForbidden"),
