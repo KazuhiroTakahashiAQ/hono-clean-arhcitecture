@@ -3,9 +3,13 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 import { webRouter } from './routes/web';
 import { swaggerUI } from '@hono/swagger-ui';
 import { Hono } from 'hono';
+import { logger } from 'hono/logger';
+import { cors } from 'hono/cors';
 
 const api = new OpenAPIHono()
-  .basePath('v1')
+api.use(cors())
+api.use(logger())
+api.basePath('v1')
   .route('/api', webRouter)
   .doc('/spec', {
     openapi: '3.1.0',

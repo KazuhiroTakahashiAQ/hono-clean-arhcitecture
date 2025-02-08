@@ -19,17 +19,23 @@ export class ArticleService {
   }
 
   async createArticle(title: string, content: string): Promise<Article> {
-    return this.articleRepository.createArticle(title, content);
+    const article = Article.construct(title, content, 1);
+    return this.articleRepository.createArticle(article);
   }
 
   async updateArticle(id: number, title: string): Promise<Article> {
-    const article = await this.articleRepository.updateArticle(id, title);
-
+    const article = await this.articleRepository.getArticleById(id);
     if (!article) {
       throw new UseCaseException("記事が見つかりません");
     }
 
-    return article;
+    article.renameTitle(title);
+
+    const updatedArticle = await this.articleRepository.updateArticle(article);
+    if (!updatedArticle) {
+      throw new UseCaseException("記事の更新に失敗しました");
+    }
+    return updatedArticle;
   }
 
   async deleteArticle(id: number): Promise<void> {
