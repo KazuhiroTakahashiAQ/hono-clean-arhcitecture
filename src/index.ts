@@ -1,15 +1,32 @@
 import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import { OpenAPIHono } from '@hono/zod-openapi'
+import { webRouter } from './routes/web/webRouter';
+import { swaggerUI } from '@hono/swagger-ui';
+import { Hono } from 'hono';
 
-const app = new Hono()
+const api = new OpenAPIHono()
+  .basePath('v1')
+  .route('/api', webRouter)
+  .doc('/spec', {
+    openapi: '3.1.0',
+    info: {
+      title: 'Web API',
+      version: '1.0.0',
+    },
+  })
+  .get('ui', swaggerUI({
+    url: '/v1/spec',
+  }))
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+  const app = new Hono()
+    .route('/', api)
+
+  // app.onError((err, c) => {
+  //   console.error(err.message)
+  //   return c.json({ error: "hoge" }, 500)
+  // })
 
 const port = 3000
-console.log(`Server is running on http://localhost:${port}`)
-
 serve({
   fetch: app.fetch,
   port
