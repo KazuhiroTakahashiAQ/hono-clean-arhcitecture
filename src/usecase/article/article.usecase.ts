@@ -15,12 +15,10 @@ export class ArticleService {
   }
 
   async listArticles(): Promise<Article[]> {
-    // 必要に応じてフィルターやソートロジックを入れる
     return this.articleRepository.listArticles();
   }
 
   async createArticle(title: string, content: string): Promise<Article> {
-    // 例: タイトルやコンテンツのバリデーションなど
     return this.articleRepository.createArticle(title, content);
   }
 

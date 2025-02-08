@@ -1,10 +1,7 @@
-import type { RouteConfig, RouteHandler } from "@hono/zod-openapi";
 import type { createArticleRoute, deleteArticleRoute, getArticleRoute, listArticleRoute, updateArticleRoute } from "./article.route";
-import type { AppBindings } from "..";
-import { ArticleService } from "../../../application/article/article.service";
+import type { AppRouteHandler } from "..";
+import { ArticleService } from "../../../usecase/article/article.usecase";
 import { MockArticleRepository } from "../../../infra/article/mock.article.repository";
-
-export type AppRouteHandler<R extends RouteConfig> = RouteHandler<R, AppBindings>;
 
 const articleRepository = new MockArticleRepository();
 const articleService = new ArticleService(articleRepository);

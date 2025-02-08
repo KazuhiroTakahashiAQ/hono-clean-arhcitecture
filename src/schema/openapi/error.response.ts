@@ -18,25 +18,9 @@ const errorSchemaFactory = (code: z.ZodEnum<any>) => {
     });
 }
 
-export const notFoundShcema = errorSchemaFactory(z.enum(["NOTFOUND"])).openapi("ErrNOTFOUND")
-export type notFoundType = z.infer<typeof notFoundShcema>
-
-export const notFound = {
-    404: {
-        description:
-            "The client is authenticated but does not have sufficient permissions to access the requested resource.",
-        content: {
-            "application/json": {
-                schema: errorSchemaFactory(z.enum(["NOTFOUND"])).openapi("ErrNOTFOUND"),
-            },
-        },
-    },
-}
-
 export const errorResponses = {
     400: {
-        description:
-            "The server cannot process the request due to a client-side error, such as malformed syntax or invalid request parameters.",
+        description: "The server cannot process the request due to a client-side error, such as malformed syntax or invalid request parameters.",
         content: {
             "application/json": {
                 schema: errorSchemaFactory(z.enum(["BAD_REQUEST"])).openapi("ErrBadRequest"),
@@ -52,8 +36,7 @@ export const errorResponses = {
         },
     },
     403: {
-        description:
-            "The client is authenticated but does not have sufficient permissions to access the requested resource.",
+        description: "The client is authenticated but does not have sufficient permissions to access the requested resource.",
         content: {
             "application/json": {
                 schema: errorSchemaFactory(z.enum(["FORBIDDEN"])).openapi("ErrForbidden"),
@@ -61,15 +44,13 @@ export const errorResponses = {
         },
     },
     404: {
-        description:
-            "The client is authenticated but does not have sufficient permissions to access the requested resource.",
+        description: "The requested resource could not be found.",
         content: {
             "application/json": {
                 schema: errorSchemaFactory(z.enum(["NOTFOUND"])).openapi("ErrNOTFOUND"),
             },
         },
     },
-
 
  // ...
 }

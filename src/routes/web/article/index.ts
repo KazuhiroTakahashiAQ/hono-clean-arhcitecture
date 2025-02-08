@@ -1,7 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import * as routes from "./article.route"
 import * as handlers from "./article.handler"
-import { handleError, handleZodError } from "../../common/error.handler";
+import { handleError, handleZodError } from "../../error.handler";
 import type { AppBindings } from "..";
 
 function createRouter(){
