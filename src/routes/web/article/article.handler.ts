@@ -7,8 +7,8 @@ const articleRepository = new MockArticleRepository();
 const articleService = new ArticleService(articleRepository);
 
 export const getArticleHandler: AppRouteHandler<typeof getArticleRoute> = async (c) => {
-  const { id } = c.req.valid('param')
-  const article = await articleService.getArticle(id);
+  const params = c.req.valid('param')
+  const article = await articleService.getArticle(params);
 
   return c.json(article, 200);
 }
@@ -20,9 +20,8 @@ export const listArticleHandler: AppRouteHandler<typeof listArticleRoute> = asyn
 }
 
 export const createArticleHandler: AppRouteHandler<typeof createArticleRoute> = async (c) => {
-  const { title, content } = c.req.valid('json')
-
-  const article = await articleService.createArticle(title, content);
+  const params = c.req.valid('json')
+  const article = await articleService.createArticle(params);
 
   return c.json(article, 201);
 }
@@ -30,14 +29,15 @@ export const createArticleHandler: AppRouteHandler<typeof createArticleRoute> = 
 export const updateArticleHandler: AppRouteHandler<typeof updateArticleRoute> = async (c) => {
   const { id } = c.req.valid('param')
   const { title } = c.req.valid('json')
-  const article = await articleService.updateArticle(id, title);
+  const params = { id, title }
+  const article = await articleService.updateArticle(params);
 
   return c.json(article, 200);
 }
 
 export const deleteArticleHandler: AppRouteHandler<typeof deleteArticleRoute> = async (c) => {
-  const { id } = c.req.valid('param')
-  await articleService.deleteArticle(id);
+  const params = c.req.valid('param')
+  await articleService.deleteArticle(params);
 
   return new Response(null, { status: 204 });
 }
