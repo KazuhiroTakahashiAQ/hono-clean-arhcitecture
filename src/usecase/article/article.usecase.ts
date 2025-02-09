@@ -1,12 +1,13 @@
 import type { ArticleRepository } from "../../domain/article/article.repository";
 import { Article } from "../../domain/article/article.entity";
 import { UseCaseException } from "../error";
+import type { createParams, deleteParams, getParams, updateParams } from "./dto";
 
 export class ArticleService {
   constructor(private readonly articleRepository: ArticleRepository) {}
 
-  async getArticle(id: number): Promise<Article> {
-    const article = await this.articleRepository.getArticleById(id);
+  async getArticle(params: getParams): Promise<Article> {
+    const article = await this.articleRepository.getArticleById(params.id);
     if (!article) {
       throw new UseCaseException("記事が見つかりません");
     }
@@ -18,18 +19,18 @@ export class ArticleService {
     return this.articleRepository.listArticles();
   }
 
-  async createArticle(title: string, content: string): Promise<Article> {
-    const article = Article.construct(title, content, 1);
+  async createArticle(params: createParams): Promise<Article> {
+    const article = Article.construct(params.title, params.content, 1);
     return this.articleRepository.createArticle(article);
   }
 
-  async updateArticle(id: number, title: string): Promise<Article> {
-    const article = await this.articleRepository.getArticleById(id);
+  async updateArticle(params: updateParams): Promise<Article> {
+    const article = await this.articleRepository.getArticleById(params.id);
     if (!article) {
       throw new UseCaseException("記事が見つかりません");
     }
 
-    article.renameTitle(title);
+    article.renameTitle(params.title);
 
     const updatedArticle = await this.articleRepository.updateArticle(article);
     if (!updatedArticle) {
@@ -38,7 +39,7 @@ export class ArticleService {
     return updatedArticle;
   }
 
-  async deleteArticle(id: number): Promise<void> {
-    return this.articleRepository.deleteArticle(id);
+  async deleteArticle(params: deleteParams): Promise<void> {
+    return this.articleRepository.deleteArticle(params.id);
   }
 }

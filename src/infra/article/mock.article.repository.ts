@@ -38,7 +38,7 @@ export class MockArticleRepository implements ArticleRepository {
       article?.title,
       article?.content,
       article?.page
-    ) ?? undefined;
+    );
   }
 
   async listArticles(): Promise<Article[]> {
