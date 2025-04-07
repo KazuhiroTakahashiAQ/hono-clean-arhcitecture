@@ -1,0 +1,18 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>OBJ Triangulator</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <h1>OBJ Triangulator</h1>
+  <input type="file" id="fileInput" accept=".obj">
+  <button id="processButton">変換する</button>
+  <div id="message"></div>
+  <a id="downloadLink" href="#" download="triangulated.obj" style="display:none;">変換後のOBJをダウンロード</a>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
